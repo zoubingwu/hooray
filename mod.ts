@@ -41,6 +41,7 @@ export async function start(options?: Options) {
       const body = ctx.request.body({ type: "json" });
       const signature = ctx.request.headers.get("X-Hub-Signature-256");
       const data: WebhookEvent = await body.value;
+
       if (options?.secret) {
         ctx.assert(!!signature, Status.BadRequest, "No signature present");
 
@@ -49,7 +50,7 @@ export async function start(options?: Options) {
             options?.secret,
             JSON.stringify(data),
             signature.slice("sha256=".length),
-          ) === false,
+          ),
           Status.BadRequest,
           "Signature verify fail",
         );
