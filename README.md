@@ -1,10 +1,10 @@
 # Hooray
 
-Write you own GitHub webhooks with Deno Deploy.
+Write you own GitHub webhooks with [Deno Deploy](https://deno.com/deploy). Deno Deploy is where you can distrubute your JavaScript/TypeScript code to the edge with one line of command.
 
 ## Quickstart
 
-Write your own webhook logic with full typings support in TypeScript. You can notify other parties like Discord, Slack, etc.
+Setup your Deno Deploy account and create a new project then write your webhook logic in TypeScript with full typing support.
 
 ```ts
 // main.ts
@@ -18,13 +18,13 @@ on("issue_comment", (payload) => {
 start();
 ```
 
-Then deploy it with [deployctl](https://github.com/denoland/deployctl):
+You can just copy the code into Deno Deploy's playground or deploy it with [deployctl](https://github.com/denoland/deployctl):
 
 ```sh
 deployctl deploy --project=YOUR_PROJECT_NAME --prod ./main.ts
 ```
 
-Now you can copy the URL of the webhook and paste it in the GitHub repo's webhook settings, the default pathname is `/webhook`, so the url will be `https://YOUR_PROJECT_NAME.deno.dev/webhook`.
+Now copy the URL of the webhook and paste it in the GitHub repo's webhook settings, the default pathname is `/webhook`, so the url will be `https://YOUR_PROJECT_NAME.deno.dev/webhook`.
 
 This pathname can be changed with options passed to `start`:
 
