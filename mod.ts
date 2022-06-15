@@ -13,7 +13,7 @@ import {
   yellow,
 } from "./deps.ts";
 
-export const app = new Application();
+const app = new Application();
 const router = new Router();
 const eventHandlerMap = new Map();
 
