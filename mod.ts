@@ -48,7 +48,7 @@ export async function start(options?: Options) {
             options?.secret,
             JSON.stringify(body),
             signature.slice("sha256=".length),
-          ),
+          ) === false,
           Status.BadRequest,
           "Signature verify fail",
         );
