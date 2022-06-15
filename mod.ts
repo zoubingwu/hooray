@@ -39,9 +39,8 @@ export async function start(options?: Options) {
       ctx.assert(!!name, Status.BadRequest, "Not a github event");
 
       const body = ctx.request.body({ type: "json" });
-
+      const signature = ctx.request.headers.get("X-Hub-Signature-256");
       if (options?.secret) {
-        const signature = ctx.request.headers.get("X-Hub-Signature-256");
         ctx.assert(!!signature, Status.BadRequest, "No signature present");
 
         ctx.assert(
@@ -53,6 +52,8 @@ export async function start(options?: Options) {
           Status.BadRequest,
           "Signature verify fail",
         );
+      } else {
+        ctx.assert(!signature, Status.NotAcceptable, "No secret provided");
       }
 
       const data: WebhookEvent = await body.value;
