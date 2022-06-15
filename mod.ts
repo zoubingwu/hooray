@@ -107,4 +107,5 @@ export function on<T extends WebhookEventName>(
 ) {
   const handlers = eventHandlerMap.get(name) ?? [];
   handlers.push(handler);
+  eventHandlerMap.set(name, handlers);
 }
