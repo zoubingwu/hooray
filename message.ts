@@ -1,4 +1,5 @@
 import {
+  PullRequest,
   PullRequestAssignedEvent,
   PullRequestClosedEvent,
   PullRequestEvent,
@@ -23,17 +24,20 @@ function getTeamName(data: Team) {
 }
 
 function getRepoName(data: Repository) {
-  return `[${data.name}](${data.url})`;
+  return `[${data.name}](${data.html_url})`;
 }
 
-class PullRequest {
+function getPullRequestName(data: PullRequest) {
+  return `[#${data.number} ${data.title}](${data.html_url})`;
+}
+
+class PullRequestHandlers {
   assigned(event: PullRequestAssignedEvent) {
     const { assignee, repository, sender, pull_request } = event;
     const title = `${getRepoName(repository)}: pull request assigned to ${
       getUserName(assignee)
     } by ${getUserName(sender)}`;
-    const text =
-      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
+    const text = getPullRequestName(pull_request);
     return [title, text].join("\n");
   }
 
@@ -42,8 +46,7 @@ class PullRequest {
     const title = `${getRepoName(repository)}: pull request unassigned from ${
       getUserName(assignee)
     } by ${getUserName(sender)}`;
-    const text =
-      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
+    const text = getPullRequestName(pull_request);
     return [title, text].join("\n");
   }
 
@@ -53,19 +56,16 @@ class PullRequest {
     const title = `${getRepoName(repository)}: pull request ${verb} by ${
       getUserName(sender)
     }`;
-    const text =
-      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
+    const text = getPullRequestName(pull_request);
 
     return [title, text].join("\n");
   }
 
   opened(event: PullRequestOpenedEvent) {
     const { repository, sender, pull_request } = event;
-    const title = `${
-      getRepoName(repository)
-    }: pull request [#${pull_request.number} ${pull_request.title}](${pull_request.url}) opened by ${
-      getUserName(sender)
-    }`;
+    const title = `${getRepoName(repository)}: pull request ${
+      getPullRequestName(pull_request)
+    } opened by ${getUserName(sender)}`;
     const text = pull_request.body ?? "";
 
     return [title, text].join("\n");
@@ -76,8 +76,7 @@ class PullRequest {
     const title = `${getRepoName(repository)}: pull request reopened by ${
       getUserName(sender)
     }`;
-    const text =
-      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
+    const text = getPullRequestName(pull_request);
 
     return [title, text].join("\n");
   }
@@ -93,8 +92,7 @@ class PullRequest {
     const title = `${getRepoName(repository)}: ${
       getUserName(sender)
     } requested a review from ${reviewer}`;
-    const text =
-      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
+    const text = getPullRequestName(pull_request);
 
     return [title, text].join("\n");
   }
@@ -110,8 +108,7 @@ class PullRequest {
     const title = `${getRepoName(repository)}: ${
       getUserName(sender)
     } removed review request from ${reviewer}`;
-    const text =
-      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
+    const text = getPullRequestName(pull_request);
 
     return [title, text].join("\n");
   }
@@ -121,14 +118,13 @@ class PullRequest {
     const title = `${getRepoName(repository)}: pull request ${action} by ${
       getUserName(sender)
     }`;
-    const text =
-      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
+    const text = getPullRequestName(pull_request);
 
     return [title, text].join("\n");
   }
 }
 
-class PullRequestReview {
+class PullRequestReviewHandlers {
   submitted(event: PullRequestReviewSubmittedEvent) {
     const { repository, sender, pull_request, review } = event;
 
@@ -138,7 +134,7 @@ class PullRequestReview {
     if (cond1 || cond2) {
       const title = `${
         getRepoName(repository)
-      }: ${pull_request.number} ${pull_request.title}](${review.html_url}) ${review.state} by ${
+      }: #${pull_request.number} ${pull_request.title}](${review.html_url}) ${review.state} by ${
         getUserName(sender)
       }`;
       const text =
@@ -149,7 +145,7 @@ class PullRequestReview {
 }
 
 export function pullRequestReview(event: PullRequestReviewEvent) {
-  const prr = new PullRequestReview();
+  const prr = new PullRequestReviewHandlers();
   switch (event.action) {
     case "submitted":
       return prr.submitted(event);
@@ -159,7 +155,7 @@ export function pullRequestReview(event: PullRequestReviewEvent) {
 }
 
 export function pullRequest(event: PullRequestEvent) {
-  const pr = new PullRequest();
+  const pr = new PullRequestHandlers();
   switch (event.action) {
     case "assigned":
       return pr.assigned(event);

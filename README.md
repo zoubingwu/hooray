@@ -21,7 +21,6 @@ import {
 const send = makeLarkSender(YOUR_LARK_ENDPOINT);
 
 app("/webhook", { secret: "test" })
-  .on('issue_comment', (e) => send(`some commented`))
   .on("pull_request", (e) => send(pullRequest(e)))
   .on("pull_request_review", (e) => send(pullRequestReview(e)));
 ```
@@ -33,16 +32,18 @@ Now copy the code into Deno Deploy's playground or deploy it with
 deployctl deploy --project=YOUR_PROJECT_NAME --prod ./main.ts
 ```
 
-Copy the URL of the webhook and paste it in the GitHub repo's webhook
-settings, the pathname in the example code is `/webhook`, so the url will be
+Copy the URL of the webhook and paste it in the GitHub repo's webhook settings,
+the pathname in the example code is `/webhook`, so the url will be
 `https://YOUR_PROJECT_NAME.deno.dev/webhook`.
 
-You can also create multiple endpoints for different repos so you can reuse some code. Just call app multiple times:
+You can also create multiple endpoints for different repos so you can reuse some
+code. Just call app multiple times:
 
 ```ts
-app("/webhook1")
-app("/webhook2")
-app("/webhook3")
+app("/webhook1");
+app("/webhook2");
+app("/webhook3");
 ```
 
-It also provided some function to generate markdown texts in reponse to certain GitHub events including `pullRequest`, `pullRequestReview`, etc.
+It also provided some function to generate markdown texts in reponse to certain
+GitHub events including `pullRequest`, `pullRequestReview`, etc.

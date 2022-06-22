@@ -115,7 +115,7 @@ export const app = (path: string, options?: Options): { on: On } => {
 
 setTimeout(() => {
   server.listen({ hostname: "127.0.0.1", port: 8000 });
-})
+});
 
 export { makeLarkSender } from "./lark.ts";
 export { pullRequest, pullRequestReview } from "./message.ts";
