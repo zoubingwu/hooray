@@ -4,50 +4,45 @@ Write you own GitHub webhooks with [Deno Deploy](https://deno.com/deploy). Deno
 Deploy is where you can distrubute your JavaScript/TypeScript code to the edge
 with one line of command.
 
-## Quickstart
+## Quick start
 
 Setup your Deno Deploy account and create a new project then write your webhook
 logic in TypeScript with full typing support.
 
 ```ts
 // main.ts
-import { on, start } from "https://deno.land/x/ghook/mod.ts";
+import {
+  app,
+  makeLarkSender,
+  pullRequest,
+  pullRequestReview,
+} from "https://deno.land/x/ghook/mod.ts";
 
-on("issue_comment", (payload) => {
-  console.log("test");
-  console.log(
-    `${payload.comment.user.login} commented: ${payload.comment.body} `,
-  );
-});
+const send = makeLarkSender(YOUR_LARK_ENDPOINT);
 
-start();
+app("/webhook", { secret: "test" })
+  .on('issue_comment', (e) => send(`some commented`))
+  .on("pull_request", (e) => send(pullRequest(e)))
+  .on("pull_request_review", (e) => send(pullRequestReview(e)));
 ```
 
-You can just copy the code into Deno Deploy's playground or deploy it with
+Now copy the code into Deno Deploy's playground or deploy it with
 [deployctl](https://github.com/denoland/deployctl):
 
 ```sh
 deployctl deploy --project=YOUR_PROJECT_NAME --prod ./main.ts
 ```
 
-Now copy the URL of the webhook and paste it in the GitHub repo's webhook
-settings, the default pathname is `/webhook`, so the url will be
+Copy the URL of the webhook and paste it in the GitHub repo's webhook
+settings, the pathname in the example code is `/webhook`, so the url will be
 `https://YOUR_PROJECT_NAME.deno.dev/webhook`.
 
-This pathname can be changed with options passed to `start`:
+You can also create multiple endpoints for different repos so you can reuse some code. Just call app multiple times:
 
 ```ts
-start({
-  pathname: "/my-webhook",
-});
+app("/webhook1")
+app("/webhook2")
+app("/webhook3")
 ```
 
-You can also pass a secret so it can verify the request is from the right GitHub
-repo. Remember to set the secret both in the GitHub repo's webhook settings and
-deno deploy's Environment Variables settings.
-
-```ts
-start({
-  secret: Deno.env.get("GITHUB_WEBHOOK_SECRET"),
-});
-```
+It also provided some function to generate markdown texts in reponse to certain GitHub events including `pullRequest`, `pullRequestReview`, etc.

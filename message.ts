@@ -148,7 +148,7 @@ class PullRequestReview {
   }
 }
 
-export function pullRequestReviewHandler(event: PullRequestReviewEvent) {
+export function pullRequestReview(event: PullRequestReviewEvent) {
   const prr = new PullRequestReview();
   switch (event.action) {
     case "submitted":
@@ -158,7 +158,7 @@ export function pullRequestReviewHandler(event: PullRequestReviewEvent) {
   }
 }
 
-export function pullRequestEventHandler(event: PullRequestEvent) {
+export function pullRequest(event: PullRequestEvent) {
   const pr = new PullRequest();
   switch (event.action) {
     case "assigned":
