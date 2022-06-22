@@ -33,7 +33,7 @@ class PullRequest {
       getUserName(assignee)
     } by ${getUserName(sender)}`;
     const text =
-      `[#${pull_request.number}${pull_request.title}](${pull_request.url})`;
+      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
     return [title, text].join("\n");
   }
 
@@ -43,7 +43,7 @@ class PullRequest {
       getUserName(assignee)
     } by ${getUserName(sender)}`;
     const text =
-      `[#${pull_request.number}${pull_request.title}](${pull_request.url})`;
+      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
     return [title, text].join("\n");
   }
 
@@ -54,7 +54,7 @@ class PullRequest {
       getUserName(sender)
     }`;
     const text =
-      `[#${pull_request.number}${pull_request.title}](${pull_request.url})`;
+      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
 
     return [title, text].join("\n");
   }
@@ -63,7 +63,7 @@ class PullRequest {
     const { repository, sender, pull_request } = event;
     const title = `${
       getRepoName(repository)
-    }: pull request [#${pull_request.number}${pull_request.title}](${pull_request.url}) opened by ${
+    }: pull request [#${pull_request.number} ${pull_request.title}](${pull_request.url}) opened by ${
       getUserName(sender)
     }`;
     const text = pull_request.body ?? "";
@@ -77,7 +77,7 @@ class PullRequest {
       getUserName(sender)
     }`;
     const text =
-      `[#${pull_request.number}${pull_request.title}](${pull_request.url})`;
+      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
 
     return [title, text].join("\n");
   }
@@ -94,7 +94,7 @@ class PullRequest {
       getUserName(sender)
     } requested a review from ${reviewer}`;
     const text =
-      `[#${pull_request.number}${pull_request.title}](${pull_request.url})`;
+      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
 
     return [title, text].join("\n");
   }
@@ -111,7 +111,7 @@ class PullRequest {
       getUserName(sender)
     } removed review request from ${reviewer}`;
     const text =
-      `[#${pull_request.number}${pull_request.title}](${pull_request.url})`;
+      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
 
     return [title, text].join("\n");
   }
@@ -122,7 +122,7 @@ class PullRequest {
       getUserName(sender)
     }`;
     const text =
-      `[#${pull_request.number}${pull_request.title}](${pull_request.url})`;
+      `[#${pull_request.number} ${pull_request.title}](${pull_request.url})`;
 
     return [title, text].join("\n");
   }
@@ -138,7 +138,7 @@ class PullRequestReview {
     if (cond1 || cond2) {
       const title = `${
         getRepoName(repository)
-      }: ${pull_request.number} pull request](${review.html_url}) ${review.state} by ${
+      }: ${pull_request.number} ${pull_request.title}](${review.html_url}) ${review.state} by ${
         getUserName(sender)
       }`;
       const text =
