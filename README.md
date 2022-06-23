@@ -1,7 +1,7 @@
 # Hooray
 
 Write you own GitHub webhooks with [Deno Deploy](https://deno.com/deploy). Deno
-Deploy is where you can distrubute your JavaScript/TypeScript code to the edge
+Deploy is where you can distribute your JavaScript/TypeScript code to the edge
 with one line of command.
 
 ## Quick start
