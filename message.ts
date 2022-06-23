@@ -134,7 +134,7 @@ class PullRequestReviewHandlers {
     if (cond1 || cond2) {
       const title = `${
         getRepoName(repository)
-      }: #${pull_request.number} ${pull_request.title}](${review.html_url}) ${review.state} by ${
+      }: [#${pull_request.number} ${pull_request.title}](${review.html_url}) ${review.state} by ${
         getUserName(sender)
       }`;
       const text =
