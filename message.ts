@@ -172,6 +172,6 @@ export function pullRequest(event: PullRequestEvent) {
     case "review_request_removed":
       return pr.reviewRequestRemoved(event);
     default:
-      return pr.defaultHandler(event);
+      return;
   }
 }
